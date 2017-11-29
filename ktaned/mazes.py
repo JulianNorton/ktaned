@@ -4,7 +4,11 @@ from pathfinding.finder.a_star import AStarFinder
 
 # maze0.svg
 # 0 is passable, 1 is wall
+# https://juliannorton.github.io/keep-talking-bomb-defusal-manual/img/maze0.svg
 
+solution = []
+
+# TODO, add multiple mazes and 'circle' locations to select the maze 
 matrix = [
     [0,0,0,0,0,1,0,0,0,0,0],
     [0,1,1,1,0,1,0,1,1,1,1],
@@ -21,27 +25,26 @@ matrix = [
 
 grid = Grid(matrix=matrix)
 
+# TODO, add user input for current location and destination
+# Currently locations are hard-coded
 start = grid.node(0, 0)
 end = grid.node(10, 10)
 
 finder = AStarFinder(diagonal_movement=DiagonalMovement.never)
 path, runs = finder.find_path(start, end, grid)
 
-print('operations:', runs, 'path length:', len(path))
-print(grid.grid_str(path=path, start=start, end=end))
-solution = []
+# Solution debugging
+def debug_maze():
+    print('operations:', runs, 'path length:', len(path))
+    print(grid.grid_str(path=path, start=start, end=end))
+    print('path')
 
+# Converts grid notation to KTANE maze size
 for i in range(len(path)):
     if i%2 == 0:
-        print(i, 'can be divded by 2')
         solution.append(path[i])
-    else:
-        print('sad!', i, 'cannot')
 
-print(path, 'becomes \n')
-print(solution)
-
-# print(i)
+# Converts solution notation to cardinal direction
 def which_direction(solution):
     solution_direction = []
     for i in range(len(solution)-1):
